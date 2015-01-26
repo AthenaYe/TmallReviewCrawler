@@ -1,5 +1,10 @@
 # Self-defined files
 proxylist
+*log
+*err
+*.pyc
+*.swp
+ceshi*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
