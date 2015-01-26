@@ -3,7 +3,7 @@ import re
 import threading
 import traceback
 
-def checkip(lines):
+def checkpro(lines):
     lines = lines.strip()
     lines = {'http': lines}
     try:
@@ -25,4 +25,4 @@ if __name__ == "__main__":
     f = open('proxylist', 'r')
     for lines in f:
         lines = lines.strip()
-        print checkip(lines)
+        print checkpro(lines)
