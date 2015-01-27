@@ -21,8 +21,11 @@ class HTTPClient(object):
 
     @classmethod
     def init_proxylist(cls, list_filename="proxylist"):
-        """
-        @param list_filename: the file which stores proxies
+        """\
+        Init proxylist from list file
+
+        Args:
+            list_filename: the file which stores proxies
         """
         if list_filename:
             with open(list_filename) as f:
@@ -31,8 +34,9 @@ class HTTPClient(object):
             raise Exception("Proxylist should be specified")
 
     def __init__(self, fail_interval=10):
-        """
-        @param fail_interval: time to sleep when connection error
+        """\
+        Args:
+            fail_interval: time to sleep when connection error
         """
         self.fail_interval = fail_interval
 
@@ -65,19 +69,42 @@ class HTTPClient(object):
                 return line
         return None
 
-    def get(self, link, use_proxy=True):
-        def _getter(link):
-            kwargs = {
-                'timeout': 100,
-            }
+    def get(self, link, use_proxy=True, **kwargs):
+        """\
+        Args:
 
-            if use_proxy and self.proxylist is not None:
+            link: the url to fetch
+            use_proxy: whether to use proxy
+            **kwargs: arguments to pass to `request.get`
+
+        Returns:
+            A tuple of (text, status_code)
+
+            text: page content
+            status_code: HTTP status code
+
+        Raises:
+            ConnectionError
+        """
+
+        def _getter(link):
+            if 'timeout' not in kwargs:
+                kwargs['timeout'] = 100
+
+            if (use_proxy
+               and self.proxylist is not None
+               and 'proxies' not in kwargs):
+                # if use_proxy is false or self.proxylist not specified,
+                # or 'proxies' has been specified by user,
+                # leave alone
+
                 proxyip = self.findproxy()
                 if proxyip is not None:
                     kwargs['proxies'] = proxyip
 
             ret = requests.get(link, **kwargs)
-            return ret.text.encode('utf-8'), ret.status_code
+            # return ret.text.encode('utf-8'), ret.status_code
+            return ret.text, ret.status_code
 
         for _ in range(5):
             # print 'getter'+link
@@ -91,6 +118,7 @@ class HTTPClient(object):
                 continue
             else:
                 return ret, status_code
+
         raise requests.ConnectionError("Connection Error")
 
 
