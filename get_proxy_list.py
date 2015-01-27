@@ -4,14 +4,22 @@ import logging
 from httpclient import HTTPClient
 from pyquery import PyQuery as pq
 
-logger = logging.getLogger(__name__)
-
 
 def get_proxies(args):
+    logger = logging.getLogger(__name__)
+    if args.debug:
+        logger.setLevel("DEBUG")
+
+    list_url = 'http://cn-proxy.com/'
 
     clt = HTTPClient()
     f = open(args.listfile, 'w')
-    proxylist, _ = clt.get('http://cn-proxy.com/', use_proxy=False)
+
+    logger.debug("Fetching proxy from {} to {}".format(
+        list_url, args.listfile
+    ))
+
+    proxylist, _ = clt.get(list_url, use_proxy=False)
     logger.info("Fetched proxy list page")
     proxylist = pq(proxylist)
 
