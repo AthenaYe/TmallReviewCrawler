@@ -2,12 +2,12 @@
 # -*- coding:utf-8 -*-
 import sys
 import argparse
-import settings
+import crawlers.shared.settings
 import logging
 import logging.config
 
-from get_proxy_list import get_proxies
-from tmall_crawler import TmallCrawler
+from crawlers.shared.get_proxy_list import get_proxies
+from crawlers.tmalldir.tmall_crawler import TmallCrawler
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -26,7 +26,7 @@ def main():
     p_get_proxies = subparsers.add_parser('get-proxies', help='Get proxy list')
     p_get_proxies.add_argument(
         '-f', '--listfile',
-        default="proxylist",
+        default="util/proxy_list",
         help="File to save proxy list"
     )
     p_get_proxies.set_defaults(func=get_proxies)
@@ -39,13 +39,12 @@ def main():
 
     args = parser.parse_args()
     if args.debug:
-        settings.LOGGING['handlers']['default']['level'] = "DEBUG"
+        crawlers.shared.settings.LOGGING['handlers']['default']['level'] = "DEBUG"
 
-    logging.config.dictConfig(settings.LOGGING)
+    logging.config.dictConfig(crawlers.shared.settings.LOGGING)
     args.func(args)
 
 if __name__ == "__main__":
-
     main()
 
 # vim: ts=4 sw=4 sts=4 expandtab

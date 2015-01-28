@@ -1,7 +1,7 @@
 #!/usr/bin/env python2.7
 # -*- coding:utf-8 -*-
 import logging
-from httpclient import HTTPClient
+from .httpclient import HTTPClient
 from pyquery import PyQuery as pq
 
 
