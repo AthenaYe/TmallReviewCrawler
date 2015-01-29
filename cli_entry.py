@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 import sys
 import argparse
-import crawlers.shared.settings
+import crawlers.settings
 import logging
 import logging.config
 
@@ -39,9 +39,9 @@ def main():
 
     args = parser.parse_args()
     if args.debug:
-        crawlers.shared.settings.LOGGING['handlers']['default']['level'] = "DEBUG"
+        crawlers.settings.LOGGING['handlers']['default']['level'] = "DEBUG"
 
-    logging.config.dictConfig(crawlers.shared.settings.LOGGING)
+    logging.config.dictConfig(crawlers.settings.LOGGING)
     args.func(args)
 
 if __name__ == "__main__":

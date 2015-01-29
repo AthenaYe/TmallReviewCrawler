@@ -133,7 +133,7 @@ MyProxy = HTTPClient
 __all__ = ["HTTPClient", "MyProxy"]
 
 if __name__ == '__main__':
-    from . import settings
+    from .. import settings
     import logging.config
     logging.config.dictConfig(settings.LOGGING)
 

@@ -5,7 +5,10 @@ import sys
 import os
 
 LOG_PATH = os.path.abspath(
-    os.path.join(os.path.dirname(__name__), "log")
+    os.path.join(
+        os.path.dirname(os.path.dirname(__name__)),
+        "log"
+    )
 )
 
 LOGGING = {
