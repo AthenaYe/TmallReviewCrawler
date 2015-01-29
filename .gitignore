@@ -1,6 +1,6 @@
 # Self-defined files
-proxy_list*
-proxylist
+tmalldata
+util
 *log
 *err
 *.pyc
