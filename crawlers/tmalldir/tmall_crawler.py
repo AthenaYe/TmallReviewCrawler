@@ -38,7 +38,7 @@ class TmallCrawler(CommentCrawler):
             raise CrawlException("Failed to find seller id")
 
         return res[0]
-#    def get_all_comments(self, shop_name, ):
+
     def get_comments(self, item_id, start_page=1):
         f = open('data/tmalldata/'+item_id, 'w')
 
@@ -95,8 +95,11 @@ class TmallCrawler(CommentCrawler):
                 #
                 ratecontent = rate['rateContent']
             #    self.save(rate["rateContent"])
-                create_json.create_json(f, shop = 'tmall', itemid = item_id, content=ratecontent, rate = 5)
+                create_json.create_json(
+                    f, shop='tmall', itemid=item_id,
+                    content=ratecontent, rate=5)
         f.close()
+
     def get_shopid(self, shop_name):
         self.item_list = []
         shop_url = self.shop_name_url.format(shop_name)
@@ -118,7 +121,9 @@ class TmallCrawler(CommentCrawler):
                 r, _ = self.http.get(url)
                 doc = lxml.html.document_fromstring(r)
                 hrefs = doc.xpath(
-                    '//div[@class = "J_TItems"] // a[@class = "item-name"] / @href')
+                    '//div[@class = "J_TItems"] '
+                    '// a[@class = "item-name"] / @href'
+                )
                 h1 = re.findall(r'id=(\d{11})', str(hrefs))
                 print h1
                 self.item_list += list(set(h1))
