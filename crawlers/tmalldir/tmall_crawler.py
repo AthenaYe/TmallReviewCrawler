@@ -40,6 +40,8 @@ class TmallCrawler(CommentCrawler):
         return res[0]
 #    def get_all_comments(self, shop_name, ):
     def get_comments(self, item_id, start_page=1):
+
+        print 'get_comments' + item_id
         f = open('data/tmalldata/'+item_id, 'w')
 
         seller_id = self.get_seller_id(item_id)
@@ -98,6 +100,8 @@ class TmallCrawler(CommentCrawler):
                 create_json.create_json(f, shop = 'tmall', itemid = item_id, content=ratecontent, rate = 5)
         f.close()
     def get_shopid(self, shop_name):
+
+        print 'get_shopid'+shop_name
         self.item_list = []
         shop_url = self.shop_name_url.format(shop_name)
         r, status_code = self.http.get(shop_url)
