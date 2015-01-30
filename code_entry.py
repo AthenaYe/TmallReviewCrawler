@@ -3,10 +3,18 @@ from crawlers.shared import httpclient
 from crawlers.tmalldir.tmall_crawler import TmallCrawler
 import os
 from tinydb import TinyDB, where
+import traceback
 
 def init_shop_items(shop_name):
     tmall = TmallCrawler()
-    tmall.get_shopid(shop_name)
+    product_db = TinyDB('tinydb_info/product_db.json')
+    try:
+        tmall.get_shopid(shop_name)
+    except KeyboardInterrupt:
+        return
+    except:
+        traceback.print_exc()
+        return
     product_db = TinyDB('tinydb_info/product_db.json')
     for ids in tmall.item_list:
         if not product_db.search(where('product_name')==ids):
@@ -44,8 +52,14 @@ def online_crawler():
     product_db = TinyDB('tinydb_info/product_db.json')
     product_list = product_db.search(where('if_visited')==False)
     for product_info in product_list:
-        tmall.get_comments(product_info['product_id'])
-        product_db.update({'if_visited':True}, where('product_id')==product_info['product_id'])
+        try:
+            tmall.get_comments(product_info['product_id'])
+        except KeyboardInterrupt:
+            return
+        except:
+            traceback.print_exc()
+        finally:
+            product_db.update({'if_visited':True}, where('product_id')==product_info['product_id'])
     return
 
 if __name__=='__main__':
